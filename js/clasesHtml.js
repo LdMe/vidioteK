@@ -154,6 +154,18 @@ class VideoClubHtml extends VideoClub{
             this.agregarAlCatalogo(item);
         }
     }
+    adaptarDatosDeApi(lista){
+        return lista.map(peli =>{
+            console.log(peli.author_name)
+            return {
+                titulo: peli.title,
+                autor: peli.authors ? peli.authors[0].name : peli.author_name ? peli.author_name[0]: "Desconocido",
+                fechaLanzamiento: peli.first_publish_year || "Desconocida",
+                precio: 9.99,
+                duracion: 90
+            }
+        })
+    }
 }
 
 
