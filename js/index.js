@@ -1,18 +1,27 @@
 import { PeliculaHtml,VideoClubHtml } from "./clasesHtml.js";
-import { buscarLibro, getLibrosFantasia } from "./api.js";
-import misDatos from "./datos.js";
+import { buscarLibro, buscarPelis, getLibrosFantasia,getPelis } from "./api.js";
 
-async function main(){
-    const pelisSection = document.getElementById("pelis");
+
+function main(){
     const pelisList = document.getElementById("pelis__list");
     const miVideoClub = new VideoClubHtml("videoClub",pelisList);
-    const librosBuscados = await buscarLibro("harry potter");
-    const librosAdaptados = miVideoClub.adaptarDatosDeApi(librosBuscados.docs);
-    miVideoClub.agregarAlCatalogoDesdeArray(librosAdaptados)
-    const pelisFantasia = await getLibrosFantasia();
-    console.log(pelisFantasia)
-    const pelisAdaptadas = miVideoClub.adaptarDatosDeApi(pelisFantasia.works)
+    buscarPeliDesdeInput("harry potter",miVideoClub);
+    buscarPeliDesdeInput("lord of the rings",miVideoClub);
+    buscarPeliDesdeInput("avatar",miVideoClub);
+    const formulario = document.getElementById("form-buscar");
+    formulario.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        const busqueda = formulario.query.value;
+        buscarPeliDesdeInput(busqueda,miVideoClub);
+    })
+
+}
+
+async function buscarPeliDesdeInput(busqueda,miVideoClub){
+    const pelis = await buscarPelis(busqueda);
+    const pelisAdaptadas = miVideoClub.adaptarDatosDeApiPelis(pelis.results)
     miVideoClub.agregarAlCatalogoDesdeArray(pelisAdaptadas);
 }
 
 main();
+console.log("1hola")
