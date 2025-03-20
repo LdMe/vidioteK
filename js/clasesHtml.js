@@ -1,5 +1,5 @@
 import { Pelicula,VideoClub} from "./poo.js";
-
+import {addToLocalStorageArray,findInLocalStorageArray, removeFromLocalStorageArray} from "./localStorage.js"
 class PeliculaHtml extends Pelicula {
     constructor(titulo, autor, fechaLanzamiento, precio, duracion) {
         super(titulo, autor, fechaLanzamiento, precio, duracion);
@@ -24,6 +24,7 @@ class PeliculaHtml extends Pelicula {
         elementoPadre.appendChild(this.articulo);
     }
     renderizar() {
+        const esFavorito = findInLocalStorageArray("pelis",this); 
         // vaciar el articulo
         this.articulo.innerHTML = "";
 
@@ -35,6 +36,7 @@ class PeliculaHtml extends Pelicula {
         const atributoDuracion = document.createElement("li");
         const atributoAlquilado = document.createElement("li");
         const atributoId = document.createElement("li");
+        const botonFavoritos = document.createElement("button");
 
 
 
@@ -59,10 +61,27 @@ class PeliculaHtml extends Pelicula {
 
         atributoId.classList.add("atributo","id");
         atributoId.textContent = "ID: "+this.id;
+        
+        if(esFavorito){
+            botonFavoritos.textContent="Quitar de favoritos";
+        }else{
+            botonFavoritos.textContent="Añadir a favoritos";
+        }
+
+        // añadir funcionalidad al boton
+        botonFavoritos.addEventListener("click",()=>{
+            if(esFavorito){
+                removeFromLocalStorageArray("pelis",this)
+            }else{
+                addToLocalStorageArray("pelis",this)
+            }
+            this.renderizar();
+        })
         // relacionar elementos
         listaAtributos.append(atributoId,atributoAutor, atributoDuracion, atributoFecha, atributoPrecio,atributoAlquilado);
         this.articulo.appendChild(titulo);
         this.articulo.appendChild(listaAtributos);
+        this.articulo.appendChild(botonFavoritos)
     }
     eliminar(){
         this.articulo.remove();

@@ -1,6 +1,5 @@
-import { PeliculaHtml,VideoClubHtml } from "./clasesHtml.js";
-import { buscarLibro, buscarPelis, getLibrosFantasia,getPelis } from "./api.js";
-
+import { VideoClubHtml } from "./clasesHtml.js";
+import {  buscarPelis,} from "./api.js";
 
 function main(){
     const pelisList = document.getElementById("pelis__list");
@@ -19,7 +18,7 @@ function main(){
 
 async function buscarPeliDesdeInput(busqueda,miVideoClub){
     const pelis = await buscarPelis(busqueda);
-    const pelisAdaptadas = miVideoClub.adaptarDatosDeApiPelis(pelis.results)
+    const pelisAdaptadas = miVideoClub.adaptarDatosDeApiPelis(pelis.results);
     miVideoClub.agregarAlCatalogoDesdeArray(pelisAdaptadas);
 }
 
